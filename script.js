@@ -1,14 +1,13 @@
 'use strict';
 
 // Selecting elements
+const player0El = document.querySelector('.player--0');
+const player1El = document.querySelector('.player--1');
 const score0El = document.querySelector('#score--0');
 const score1El = document.getElementById('score--1');
-
-// getElementsById... sss??? Oh... Come On!!!
-// let current0El = document.getElementsById('current--0');
-
 let current0El = document.getElementById('current--0');
 let current1El = document.getElementById('current--1');
+
 const diceEl = document.querySelector('.dice');
 const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
@@ -19,7 +18,10 @@ score0El.textContent = 0;
 score1El.textContent = 0;
 diceEl.classList.add('hidden');
 
+const scores = [0, 0];
 let currentScore = 0;
+let activePlayer = 0;
+
 // Rolling dice functionality
 btnRoll.addEventListener('click', function () {
   // 1. Generating a random dice roll
@@ -30,40 +32,21 @@ btnRoll.addEventListener('click', function () {
   diceEl.classList.remove('hidden');
   diceEl.src = `dice-${dice}.png`;
 
-  // Unnecessary for loop code
-  //   diceEl.classList.remove('hidden');
-  //   for (let i = 1; i <= 6; i++) {
-  //     if (dice === i) {
-  //       diceEl.src = `dice-${i}.png`;
-  //     }
-  //   }
-
-  // DRY CODE!!!
-  //   if (dice === 1) {
-  //     diceEl.src = 'dice-1.png';
-  //   }
-  //   if (dice === 2) {
-  //     diceEl.src = 'dice-2.png';
-  //   }
-  //   if (dice === 3) {
-  //     diceEl.src = 'dice-3.png';
-  //   }
-  //   if (dice === 4) {
-  //     diceEl.src = 'dice-4.png';
-  //   }
-  //   if (dice === 5) {
-  //     diceEl.src = 'dice-5.png';
-  //   }
-  //   if (dice === 6) {
-  //     diceEl.src = 'dice-6.png';
-  //   }
-
   // 3. Check for rolled 1:
   if (dice !== 1) {
     // Add dice to current score
     currentScore += dice;
-    current0El.textContent = currentScore;
+    document.getElementById(
+      `current--${activePlayer}`
+    ).textContent = currentScore;
   } else {
     // switch to next player
+    document.getElementById(`current--${activePlayer}`).textContent = 0;
+    currentScore = 0;
+    activePlayer = activePlayer === 0 ? 1 : 0;
+
+    // switch background color to next player
+    player0El.classList.toggle('player--active');
+    player1El.classList.toggle('player--active');
   }
 });
